@@ -485,8 +485,7 @@ export class SuperClusterAdapter implements ISuperClusterAdapter {
     const customMarkerObject = this.pCustomMarkerIcon(scfeature);
     if (typeof customMarkerObject === 'string') {
       mIcon = {
-        scaledSize: new google.maps.Size(32, 32),
-        url: customMarkerObject,
+        url: customMarkerObject
       };
     } else {
       mIcon = customMarkerObject;
