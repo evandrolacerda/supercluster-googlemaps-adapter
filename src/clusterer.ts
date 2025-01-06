@@ -32,6 +32,8 @@ export class SuperClusterAdapter implements ISuperClusterAdapter {
     marker: google.maps.Marker,
   ) => google.maps.MarkerOptions | null;
   private pMarkerClick: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void;
+  private pMarkerMouseOver: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void;
+  private pMarkerMouseLeave: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void;
   private pFeatureClick: (event: google.maps.Data.MouseEvent) => void;
   private pClusterClick:
     | ((
@@ -69,6 +71,8 @@ export class SuperClusterAdapter implements ISuperClusterAdapter {
     this.pCustomClusterIcon = build.customClusterIcon;
     this.pUpdateMarkerOptions = build.updateMarkerOptions;
     this.pMarkerClick = build.markerClick;
+    this.pMarkerMouseOver = build.markerMouseOver;
+    this.pMarkerMouseLeave = build.markerMouseLeave;
     this.pFeatureClick = build.featureClick;
     this.pClusterClick = build.clusterClick;
     this.pFeatureStyle = build.featureStyle;
@@ -406,6 +410,18 @@ export class SuperClusterAdapter implements ISuperClusterAdapter {
     const marker = new google.maps.Marker(options);
     this.assignAdditionalProperties(marker, scfeature);
     this.assignEventsToMarker(marker);
+
+    if( this.pMarkerMouseOver ){
+      google.maps.event.addListener(marker, 'mouseover', (event: google.maps.MouseEvent) => {
+        this.pMarkerMouseOver(marker, event);
+      });
+
+      google.maps.event.addListener(marker, 'mouseleave', (event: google.maps.MouseEvent) => {
+        this.pMarkerMouseLeave(marker, event);
+      });
+
+    }
+
     return marker;
   }
 
@@ -481,12 +497,10 @@ export class SuperClusterAdapter implements ISuperClusterAdapter {
   private getMarkerOptionsForPoint(
     scfeature: Supercluster.PointFeature<Supercluster.AnyProps>,
   ): google.maps.MarkerOptions {
-    let mIcon: google.maps.Icon | google.maps.Symbol;
+    let mIcon: string | google.maps.Symbol;
     const customMarkerObject = this.pCustomMarkerIcon(scfeature);
     if (typeof customMarkerObject === 'string') {
-      mIcon = {
-        url: customMarkerObject
-      };
+      mIcon = customMarkerObject;
     } else {
       mIcon = customMarkerObject;
     }
@@ -544,6 +558,15 @@ export class SuperClusterAdapter implements ISuperClusterAdapter {
           }
         } else {
           this.pMarkerClick(marker, event);
+
+          google.maps.event.addListener(marker, "mouseover", (event: google.maps.MouseEvent) => {
+            this.pMarkerMouseOver(marker, event);
+          });
+
+          google.maps.event.addListener(marker, "mouseleave", (event: google.maps.MouseEvent) => {
+            this.pMarkerMouseLeave(marker, event);
+          });
+
         }
       });
     }

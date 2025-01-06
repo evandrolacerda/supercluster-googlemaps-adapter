@@ -32,6 +32,8 @@ export class Builder {
     marker: google.maps.Marker,
   ) => google.maps.MarkerOptions | null;
   private pMarkerClick: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void;
+  private pMarkerMouseOver: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void;
+  private pMarkerMouseLeave: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void;
   private pFeatureClick: (event: google.maps.Data.MouseEvent) => void;
   private pClusterClick:
     | ((
@@ -69,6 +71,14 @@ export class Builder {
     this.pMarkerClick = (marker: google.maps.Marker, event: google.maps.MouseEvent) => {
       return;
     };
+
+    this.pMarkerMouseOver = (marker: google.maps.Marker, event: google.maps.MouseEvent) => {
+      return;
+    }
+
+    this.pMarkerMouseLeave = (marker: google.maps.Marker, event: google.maps.MouseEvent) => {
+      return;
+    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.pFeatureClick = (event: google.maps.Data.MouseEvent) => {
       return;
@@ -168,6 +178,16 @@ export class Builder {
 
   public withMarkerClick(markerClick: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void): Builder {
     this.pMarkerClick = markerClick;
+    return this;
+  }
+
+  public withMarkerMouseOver(markerClick: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void): Builder {
+    this.pMarkerMouseOver = markerClick;
+    return this;
+  }
+
+  public withMarkerMouseLeave(markerClick: (marker: google.maps.Marker, event: google.maps.MouseEvent) => void): Builder {
+    this.pMarkerMouseLeave = markerClick;
     return this;
   }
 
@@ -275,6 +295,14 @@ export class Builder {
 
   get markerClick(): (marker: google.maps.Marker, event: google.maps.MouseEvent) => void {
     return this.pMarkerClick;
+  }
+
+  get markerMouseOver(): (marker: google.maps.Marker, event: google.maps.MouseEvent) => void {
+    return this.pMarkerMouseOver;
+  }
+
+  get markerMouseLeave(): (marker: google.maps.Marker, event: google.maps.MouseEvent) => void {
+    return this.pMarkerMouseLeave;
   }
 
   get featureClick(): (event: google.maps.Data.MouseEvent) => void {
