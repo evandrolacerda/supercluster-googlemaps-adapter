@@ -1,4 +1,4 @@
-import { setupGoogleMapsAPIMock } from '../aux/mockgooglemapsapi';
+import { setupGoogleMapsAPIMock } from '../auxiliary/mockgooglemapsapi';
 import { SuperClusterAdapterLoader } from '../index';
 
 beforeAll(() => {
